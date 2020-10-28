@@ -3,12 +3,14 @@ package com.tokopedia.durianmoney_covid_chatbot.view
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tokopedia.durianmoney_covid_chatbot.core.base.BaseViewModel
 import com.tokopedia.durianmoney_covid_chatbot.data.database.ChatDataDao
 import com.tokopedia.durianmoney_covid_chatbot.data.database.CountryCodeDao
-import com.tokopedia.durianmoney_covid_chatbot.data.models.*
+import com.tokopedia.durianmoney_covid_chatbot.data.models.ChatDataModel
+import com.tokopedia.durianmoney_covid_chatbot.data.models.Countries
+import com.tokopedia.durianmoney_covid_chatbot.data.models.StateData
+import com.tokopedia.durianmoney_covid_chatbot.data.models.WorldResponse
 import com.tokopedia.durianmoney_covid_chatbot.data.networks.CovidApi
 import com.tokopedia.durianmoney_covid_chatbot.data.networks.NetworkState
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -26,9 +28,8 @@ class ChatViewModel @Inject constructor(
     private val chatDataDao: ChatDataDao
 ) : BaseViewModel<ChatViewModel>() {
 
-    var networkLiveData: LiveData<NetworkState> = MutableLiveData()
+    var networkLiveData: MutableLiveData<NetworkState> = MutableLiveData()
     val queryLiveData: MutableLiveData<String> = MutableLiveData()
-
     var responseWorldData: MutableLiveData<WorldResponse> = MutableLiveData()
     var responseStateData: MutableLiveData<List<StateData>>? = MutableLiveData()
     var responseCountries: MutableLiveData<List<Countries>> = MutableLiveData()
@@ -36,12 +37,12 @@ class ChatViewModel @Inject constructor(
     var countryCodeString = ""
 
     var listUserQuery = mutableListOf<ChatDataModel?>()
-    private var chatDataModel:ChatDataModel? = null
+    private var chatDataModel: ChatDataModel? = null
 
     private val supervisorJob = SupervisorJob()
 
     companion object {
-        const val CASESS = "cases "
+        const val CASES = "cases "
         const val DEATHS = "deaths "
         const val TOTAL = "total"
         const val DEATHS_TOTAL = "deaths total"
@@ -53,11 +54,11 @@ class ChatViewModel @Inject constructor(
     }
 
     fun getUserQuery(userQuery: String, context: Context) {
-        if (userQuery.contains(CASESS, ignoreCase = true)) {
+        if (userQuery.contains(CASES, ignoreCase = true)) {
             if (userQuery.equals(CASES_TOTAL, ignoreCase = true)) {
                 getTotalData(userQuery, TOTAL)
             } else {
-                getStateData(userQuery, CASESS)
+                getStateData(userQuery, CASES)
             }
         } else if (userQuery.contains(DEATHS, ignoreCase = true)) {
             if (userQuery.equals(DEATHS_TOTAL, ignoreCase = true)) {
@@ -65,13 +66,13 @@ class ChatViewModel @Inject constructor(
             } else {
                 getStateData(userQuery, DEATHS)
             }
-        }  else {
+        } else {
             Toast.makeText(context, "query not found", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun getStateData(query: String, delimiter: String) {
-        val countryCode  = query.split(delimiter, ignoreCase = true)
+        val countryCode = query.split(delimiter, ignoreCase = true)
         Log.d("countryCodeByTypingUser", countryCode.last())
         countryCodeString = countryCode.last()
         queryLiveData.postValue(query)
@@ -138,15 +139,20 @@ class ChatViewModel @Inject constructor(
 
     private fun getJobErrorHandler() = CoroutineExceptionHandler { _, e ->
         Log.e(ChatViewModel::class.simpleName, "An error happened: $e")
-        //networkStatusLiveData.postValue(NetworkState.fialed(e.localizedMessage))
-        //networkStatusLiveData.postValue(NetworkState.FAILED)
+        networkLiveData.postValue(NetworkState.fialed(e.localizedMessage))
+        networkLiveData.postValue(NetworkState.FAILED)
     }
 
     fun invalidate() {
         supervisorJob.cancelChildren()
     }
 
-    fun insertUserModel(query: String, isFromUser: Boolean, botWorldResponse: WorldResponse?, stateData: StateData?) {
+    fun insertUserModel(
+        query: String,
+        isFromUser: Boolean,
+        botWorldResponse: WorldResponse?,
+        stateData: StateData?
+    ) {
         chatDataModel = ChatDataModel(
             query = query,
             isFromUser = isFromUser,
