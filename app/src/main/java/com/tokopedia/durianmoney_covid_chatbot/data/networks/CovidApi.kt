@@ -12,7 +12,7 @@ interface CovidApi {
     companion object {
         const val LIVE = "live"
         const val COUNTRY = "country"
-        const val QUERY = "query"
+        const val QUERY = "slug"
         const val WORLD = "world"
         const val TOTAL = "total"
         const val COUNTRIES = "countries"
@@ -20,7 +20,7 @@ interface CovidApi {
 
     @GET("$LIVE/$COUNTRY/{$QUERY}")
     suspend fun getCovidDataByState(
-        @Path("query") query: String?
+        @Path("slug") slug: String?
     ): List<StateData>
 
     @GET("$WORLD/$TOTAL")
