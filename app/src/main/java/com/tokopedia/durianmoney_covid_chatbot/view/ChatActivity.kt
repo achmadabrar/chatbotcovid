@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tokopedia.durianmoney_covid_chatbot.R
 import com.tokopedia.durianmoney_covid_chatbot.core.base.BaseActivity
+import com.tokopedia.durianmoney_covid_chatbot.external.hideKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -23,32 +24,36 @@ class ChatActivity : BaseActivity() {
         onClickButton()
 
         viewModel.responseWorldData.observe(this, Observer {
-         if (it != null) {
-             viewModel.listUserQuery.last()?.query?.let { query ->
-                 viewModel.insertUserModel(
-                     query,
-                     false,
-                     it,
-                     null
-                 )
-             }
-             adapter = ChatAdapter(viewModel.listUserQuery)
-             loadRecyclerView()
+            if (it != null) {
+                if (!viewModel.listUserQuery.isNullOrEmpty()) {
+                    viewModel.listUserQuery.last()?.query?.let { query ->
+                        viewModel.insertUserModel(
+                            query,
+                            false,
+                            it,
+                            null
+                        )
+                    }
+                    adapter = ChatAdapter(viewModel.listUserQuery)
+                    loadRecyclerView()
+                }
             }
         })
 
         viewModel.responseStateData?.observe(this, Observer {
             if (!it.isNullOrEmpty()) {
-                viewModel.listUserQuery.last()?.query?.let { query ->
-                    viewModel.insertUserModel(
-                        query,
-                        false,
-                        null,
-                        it.last()
-                    )
+                if (!viewModel.listUserQuery.isNullOrEmpty()) {
+                    viewModel.listUserQuery.last()?.query?.let { query ->
+                        viewModel.insertUserModel(
+                            query,
+                            false,
+                            null,
+                            it.last()
+                        )
+                    }
+                    adapter = ChatAdapter(viewModel.listUserQuery)
+                    loadRecyclerView()
                 }
-                adapter = ChatAdapter(viewModel.listUserQuery)
-                loadRecyclerView()
             } else {
                 viewModel.listUserQuery.last()?.query?.let { query ->
                     viewModel.insertUserModel(
@@ -61,6 +66,7 @@ class ChatActivity : BaseActivity() {
                 adapter = ChatAdapter(viewModel.listUserQuery)
                 loadRecyclerView()
             }
+
         })
 
         viewModel.queryLiveData.observe(this, Observer {
@@ -68,6 +74,7 @@ class ChatActivity : BaseActivity() {
                 observeData(it)
             }
         })
+
     }
 
     private fun observeData(query: String) {
@@ -76,17 +83,21 @@ class ChatActivity : BaseActivity() {
         loadRecyclerView()
     }
 
+
     private fun loadRecyclerView() {
         recyclerChat.adapter = adapter
         recyclerChat.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        adapter?.itemCount?.let { recyclerChat.smoothScrollToPosition(it - 1) }
+        if (adapter?.itemCount != 0 ) {
+            adapter?.itemCount?.let { recyclerChat.smoothScrollToPosition(it - 1) }
+        }
 
     }
 
     fun onClickButton() {
         btnChat.setOnClickListener {
             viewModel.getUserQuery(etChat.text.toString(), this)
+            hideKeyboard(it)
 
         }
     }
