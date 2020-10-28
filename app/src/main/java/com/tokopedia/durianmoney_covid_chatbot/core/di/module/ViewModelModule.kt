@@ -2,7 +2,7 @@ package com.tokopedia.durianmoney_covid_chatbot.core.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.tokopedia.durianmoney_covid_chatbot.ChatViewModel
+import com.tokopedia.durianmoney_covid_chatbot.view.ChatViewModel
 import com.tokopedia.durianmoney_covid_chatbot.core.di.ViewModelFactory
 import com.tokopedia.durianmoney_covid_chatbot.core.di.ViewModelKey
 import dagger.Binds

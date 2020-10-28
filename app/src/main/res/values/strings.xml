@@ -2,4 +2,11 @@
     <string name="app_name">DurianMoney-Covid-Chatbot</string>
     <string name="send">Send</string>
     <string name="title">Covid 19 Chat Report</string>
+    <string name="bot">Bot</string>
+    <string name="user">User</string>
+    <string name="date">20:00</string>
+    <string name="total_active_cases">Total Active Cases %s</string>
+    <string name="total_deaths">Total Deaths %s</string>
+    <string name="cases_country_code">%s Active Cases %s</string>
+    <string name="deaths_country_code">%s Deaths %s</string>
 </resources>

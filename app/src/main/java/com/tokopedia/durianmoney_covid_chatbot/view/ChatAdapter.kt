@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tokopedia.durianmoney_covid_chatbot.R
-import com.tokopedia.durianmoney_covid_chatbot.data.models.UserQueryModel
+import com.tokopedia.durianmoney_covid_chatbot.data.models.ChatDataModel
 
-class NewChatAdapter(
-    private val query: MutableList<UserQueryModel?>
+class ChatAdapter(
+    private val query: MutableList<ChatDataModel?>
 ): RecyclerView.Adapter<ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {

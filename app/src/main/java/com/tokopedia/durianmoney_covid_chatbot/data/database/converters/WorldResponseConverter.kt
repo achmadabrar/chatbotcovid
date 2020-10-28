@@ -4,20 +4,21 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tokopedia.durianmoney_covid_chatbot.data.models.StateData
+import com.tokopedia.durianmoney_covid_chatbot.data.models.WorldResponse
 
-class StateDataConverter {
+class WorldResponseConverter {
     companion object {
         @TypeConverter
         @JvmStatic
-        fun mutableListToString(string: StateData): String {
-            val type = object : TypeToken<StateData>() {}.type
-            return Gson().toJson(string, type)
+        fun mutableListToString(worldResponse: WorldResponse): String {
+            val type = object : TypeToken<WorldResponse>() {}.type
+            return Gson().toJson(worldResponse, type)
         }
 
         @TypeConverter
         @JvmStatic
-        fun stringToMutableList(string: String): StateData {
-            val type = object : TypeToken<StateData>() {}.type
+        fun stringToMutableList(string: String): WorldResponse {
+            val type = object : TypeToken<WorldResponse>() {}.type
             return Gson().fromJson(string, type)
         }
     }

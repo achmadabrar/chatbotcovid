@@ -1,13 +1,12 @@
 package com.tokopedia.durianmoney_covid_chatbot.external
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import com.tokopedia.durianmoney_covid_chatbot.data.networks.Results
 import com.tokopedia.durianmoney_covid_chatbot.data.networks.Results.Companion.loading
 
 
+/*
 fun <T, A> resultLiveData(databaseQuery: () -> LiveData<T>,
                           networkCall: suspend () -> Results<A>,
                           saveCallResult: suspend (A) -> Unit): LiveData<Results<T>> =
@@ -22,4 +21,4 @@ fun <T, A> resultLiveData(databaseQuery: () -> LiveData<T>,
             emit(Results.error<T>(responseStatus.message!!))
             emitSource(source)
         }
-    }
+    }*/

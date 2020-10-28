@@ -3,7 +3,8 @@ package com.tokopedia.durianmoney_covid_chatbot.core.di.component
 import android.app.Application
 import com.tokopedia.durianmoney_covid_chatbot.core.base.BaseApplication
 import com.tokopedia.durianmoney_covid_chatbot.core.di.module.ActivityBuilderModule
-import com.tokopedia.durianmoney_covid_chatbot.core.di.module.NetworksModule
+import com.tokopedia.durianmoney_covid_chatbot.core.di.module.DatabaseModule
+import com.tokopedia.durianmoney_covid_chatbot.core.di.module.NetworkModule
 import com.tokopedia.durianmoney_covid_chatbot.core.di.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -17,17 +18,18 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         ViewModelModule::class,
         ActivityBuilderModule::class,
-        NetworksModule::class
+        NetworkModule::class,
+        DatabaseModule::class
     ]
 )
 interface AppComponent : AndroidInjector<BaseApplication> {
 
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<BaseApplication>() {
+    interface Builder{
 
         @BindsInstance
         abstract fun application(application: Application): Builder
 
-        abstract fun networkModule(networkModule: NetworksModule): Builder
+        fun build(): AppComponent
     }
 }

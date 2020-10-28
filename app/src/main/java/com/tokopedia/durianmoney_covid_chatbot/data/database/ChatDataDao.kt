@@ -1,23 +1,30 @@
 package com.tokopedia.durianmoney_covid_chatbot.data.database
 
 import androidx.room.*
-import com.tokopedia.durianmoney_covid_chatbot.data.database.converters.CovidDataByState
-import com.tokopedia.durianmoney_covid_chatbot.data.models.DbCovidbyState
-import java.util.*
+import com.tokopedia.durianmoney_covid_chatbot.data.database.converters.ChatDataConverter
+import com.tokopedia.durianmoney_covid_chatbot.data.database.converters.WorldResponseConverter
+import com.tokopedia.durianmoney_covid_chatbot.data.models.StateData
+import com.tokopedia.durianmoney_covid_chatbot.data.models.WorldResponse
 
 @Dao
-@TypeConverters(CovidDataByState::class)
-interface UserQueryDao {
+@TypeConverters(ChatDataConverter::class, WorldResponseConverter::class)
+interface ChatDataDao {
 
-    @Query("SELECT * FROM covid_by_state_table")
-    suspend fun getAllCovidData(): List<DbCovidbyState>
+    @Query("SELECT * FROM state_data_table")
+    suspend fun getAllCovidData(): List<StateData>?
 
-    @Query("SELECT * FROM covid_by_state_table WHERE `country` == :country ")
-    suspend fun getCovidData(country: String?): List<DbCovidbyState>
-
+    @Query("SELECT * FROM state_data_table WHERE `countryCode` == :countryCode")
+    suspend fun getCovidData(countryCode: String?): List<StateData>?
+/*
     @Query("DELETE FROM covid_by_state_table WHERE expiredDate < :expiredDate")
-    suspend fun deleteListProduct(expiredDate: Date?)
+    suspend fun deleteListProduct(expiredDate: Date?)*/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertListProduct(listProduct: List<DbCovidbyState>)
+    suspend fun insertStateData(listStateData: List<StateData>)
+
+    @Query("SELECT * FROM world_total_table")
+    suspend fun getTotalData(): WorldResponse?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTotalData(listTotalData: WorldResponse)
 }

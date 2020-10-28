@@ -1,20 +1,17 @@
 package com.tokopedia.durianmoney_covid_chatbot.core.di.module
 
-import android.app.Application
 import com.google.gson.GsonBuilder
 import com.tokopedia.durianmoney_covid_chatbot.BuildConfig
-import com.tokopedia.durianmoney_covid_chatbot.data.database.UserQueryDatabase
 import com.tokopedia.durianmoney_covid_chatbot.data.networks.CovidApi
 import dagger.Module
 import dagger.Provides
-import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
 
 @Module
-class NetworksModule {
+class NetworkModule {
 
     @Provides
     fun providePostApi(retrofit: Retrofit): CovidApi {
