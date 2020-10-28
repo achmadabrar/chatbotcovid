@@ -15,6 +15,7 @@ import javax.inject.Singleton
 
 @Module
 class NetworksModule {
+
     @Provides
     fun providePostApi(retrofit: Retrofit): CovidApi {
         return retrofit.create(CovidApi::class.java)
@@ -44,15 +45,4 @@ class NetworksModule {
             .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideDb(app: Application) = UserQueryDatabase.getInstance(app)
-
-    /*@Singleton
-    @Provides
-    fun provideSearchProductDao(searchProductDb: UserQueryDatabase) = searchProductDb.searchProductDao()
-
-    @Singleton
-    @Provides
-    fun provideSearchShopDao(searchShopDb: UserQueryDatabase) = searchShopDb.searchShopDao()*/
 }
